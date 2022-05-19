@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit files</title>
+
+  <link rel="stylesheet" href="/index.css">
+</head>
+
+<body>
+  <div id="prompt-container">
+    <div id="prompt-card">
+      <div id="prompt-title"></div>
+      <input id="prompt-input" type="text">
+      <div id="prompt-actions">
+        <button id="prompt-cancel" class="red">Cancel</button>
+        <button id="prompt-save">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirm-container">
+    <div id="confirm-card">
+      <div id="confirm-title"></div>
+      <div id="confirm-actions">
+        <button id="confirm-cancel" class="red">Cancel</button>
+        <button id="confirm-continue">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="header">
+    <button id="back-button">Back</button>
+    <button id="delete-button" class="red">Delete</button>
+  </div>
+  <div id="content">
+    <textarea id="file"></textarea>
+    <div id="folder"></div>
+    <div id="add-buttons">
+      <button id="add-file">Add file</button>
+      <button id="add-folder">Add folder</button>
+    </div>
+  </div>
+
+  <script src="/index.js"></script>
+</body>
+
+</html>
