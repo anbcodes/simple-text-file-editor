@@ -6,6 +6,7 @@ const app = new Application();
 const root = Deno.args[0];
 const username = Deno.args[1];
 const password = Deno.args[2];
+const port = +(Deno.args[3] || 8080);
 
 if (!root || !username || !password) {
   console.error("Usage: ./server [directory_to_serve] [username] [password]");
@@ -90,4 +91,4 @@ app.use(async (ctx, next) => {
   }
 });
 
-app.listen({ port: 8080 });
+app.listen({ port });
