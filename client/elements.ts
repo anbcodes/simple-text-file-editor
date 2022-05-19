@@ -21,6 +21,14 @@ export const addFile = ensure<HTMLButtonElement>("#add-file");
 
 export const addFolder = ensure<HTMLButtonElement>("#add-folder");
 
+export const fileUpload = ensure<HTMLInputElement>("#file-upload");
+export const uploadButton = ensure<HTMLLabelElement>("#upload-button");
+
+export const downloadButton = ensure<HTMLAnchorElement>("#download-button");
+
+export const image = ensure<HTMLImageElement>("#image");
+export const imageContainer = ensure<HTMLDivElement>("#image-container");
+
 export const promptEl = {
   container: ensure<HTMLDivElement>("#prompt-container"),
   card: ensure<HTMLDivElement>("#prompt-card"),

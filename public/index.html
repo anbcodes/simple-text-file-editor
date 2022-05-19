@@ -33,12 +33,18 @@
   </div>
 
   <div id="header">
-    <button id="back-button">Back</button>
-    <button id="delete-button" class="red">Delete</button>
+    <button id="back-button" class="icon"><img src="/back.png" width="30"></button>
+    <button id="delete-button" class="icon"><img src="/delete.png" width="30"></button>
+    <a id="download-button" class="icon btn" download><img src="/download.png" width="30"></a>
+    <input id="file-upload" hidden name="file-upload" type="file" multiple>
+    <label for="file-upload" id="upload-button" class="icon btn"><img src="/upload.png" width="30"></label>
   </div>
   <div id="content">
     <textarea id="file"></textarea>
     <div id="folder"></div>
+    <div id="image-container">
+      <img id="image">
+    </div>
     <div id="add-buttons">
       <button id="add-file">Add file</button>
       <button id="add-folder">Add folder</button>

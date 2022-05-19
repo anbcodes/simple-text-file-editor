@@ -19,7 +19,9 @@ textarea {
 #add-buttons,
 #back-button,
 #confirm-container,
-#prompt-container {
+#prompt-container,
+#image-container,
+#upload-button {
   display: none;
 }
 
@@ -55,7 +57,8 @@ input {
   font-size: 16px;
 }
 
-button {
+button,
+.btn {
   background-color: black;
   border: rgb(39, 39, 39) solid 1px;
   border-radius: 0.5rem;
@@ -67,7 +70,8 @@ button {
   font-size: 16px;
 }
 
-button:hover {
+button:hover,
+.btn:hover {
   background-color: rgb(14, 14, 14);
 }
 
@@ -94,6 +98,8 @@ button:hover {
   padding: 1rem;
   cursor: pointer;
   border-bottom: 2px solid rgb(32, 32, 32);
+  display: flex;
+  align-items: center;
 }
 
 #folder {
@@ -122,4 +128,24 @@ textarea {
 
 textarea:focus {
   outline: none;
+}
+
+.icon {
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  border: none;
+}
+
+.icon>img {
+  margin: 0px;
+  padding: 0px;
+}
+
+#image-container {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }

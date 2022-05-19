@@ -1,5 +1,7 @@
 import { Application } from "https://deno.land/x/oak/mod.ts";
-import { join } from "https://deno.land/std/path/mod.ts";
+import { basename, join } from "https://deno.land/std/path/mod.ts";
+
+import { JSZip } from "https://deno.land/x/jszip/mod.ts";
 
 const app = new Application();
 
@@ -37,6 +39,29 @@ async function asyncIterToArray<V>(
   return arr;
 }
 
+const createZipfile = async (path: string): Promise<JSZip> => {
+  const zip = new JSZip();
+
+  const add = async (root: string, path: string) => {
+    const files = await Deno.readDir(join(root, path));
+    for await (const file of files) {
+      if (file.isFile) {
+        zip.addFile(
+          join(path, file.name),
+          await Deno.readFile(join(root, path, file.name)),
+        );
+      } else if (file.isDirectory) {
+        zip.folder(file.name);
+        add(root, join(path, file.name));
+      }
+    }
+  };
+
+  await add(path, "");
+
+  return zip;
+};
+
 app.use(async (ctx, next) => {
   await next();
 
@@ -53,15 +78,15 @@ app.use(async (ctx, next) => {
           data: await asyncIterToArray(data),
         });
       } else {
-        const data = await Deno.readTextFile(file);
-        ctx.response.body = JSON.stringify({ type: "file", data });
+        const data = await Deno.readFile(file);
+        ctx.response.body = JSON.stringify({ type: "file", data: [...data] });
       }
 
       ctx.response.status = 200;
       ctx.response.headers.set("Content-Type", "text/json");
     } else if (ctx.request.method === "PUT") {
-      const data = await ctx.request.body({ type: "text" }).value;
-      await Deno.writeTextFile(file, data);
+      const data = await ctx.request.body({ type: "bytes" }).value;
+      await Deno.writeFile(file, data);
       ctx.response.status = 200;
     } else if (ctx.request.method === "DELETE") {
       await Deno.remove(file, { recursive: true });
@@ -84,6 +109,30 @@ app.use(async (ctx, next) => {
   } else if (ctx.request.url.pathname === "/") {
     ctx.response.headers.set("Location", "/edit");
     ctx.response.status = 301;
+  } else if (ctx.request.url.pathname.startsWith("/download/")) {
+    const file = ctx.request.url.pathname.slice("/download/".length);
+    const joinedPath = join(
+      root,
+      file,
+    );
+
+    if (Deno.statSync(joinedPath).isDirectory) {
+      const zip = await createZipfile(joinedPath);
+      const data = await zip.generateAsync({
+        "type": "uint8array",
+      });
+      ctx.response.headers.set("Content-Type", "application/zip");
+      ctx.response.headers.set(
+        "content-disposition",
+        `attachment; filename="${basename(file) || "all"}.zip"`,
+      );
+      ctx.response.body = data;
+    } else {
+      await ctx.send({
+        path: file,
+        root,
+      });
+    }
   } else {
     await ctx.send({
       root: "./public",
