@@ -30,7 +30,7 @@ addEventListener("popstate", () => {
 file.addEventListener("input", () => {
   fetch(`/_path/${getLoc()}`, {
     method: "PUT",
-    body: file.textContent,
+    body: file.value,
   });
 });
 
