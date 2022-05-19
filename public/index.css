@@ -117,6 +117,7 @@ textarea {
   border: none;
   border-top: 2px solid rgb(32, 32, 32);
   padding: 1rem;
+  font-family: monospace;
 }
 
 textarea:focus {
