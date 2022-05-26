@@ -11,7 +11,7 @@ const password = Deno.args[2];
 const port = +(Deno.args[3] || 8080);
 
 if (!root || !username || !password) {
-  console.error("Usage: ./server [directory_to_serve] [username] [password]");
+  console.error("Usage: ./server [directory_to_serve] [username] [password] [port] [hide_hidden_files?]");
   Deno.exit(1);
 }
 
@@ -72,10 +72,10 @@ app.use(async (ctx, next) => {
     );
     if (ctx.request.method === "GET") {
       if (Deno.statSync(file).isDirectory) {
-        const data = await Deno.readDir(file);
+        const data = (await asyncIterToArray(Deno.readDir(file))).filter(v => !Deno.args[4] || v.name[0] !== '.');
         ctx.response.body = JSON.stringify({
           type: "directory",
-          data: await asyncIterToArray(data),
+          data,
         });
       } else {
         const data = await Deno.readFile(file);
